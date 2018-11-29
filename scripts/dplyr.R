@@ -33,3 +33,47 @@ mean(interviews$no_membrs)
 
 interviews %>% group_by(village) %>%
   summarize(mean_no_membrs = mean(no_membrs))
+
+interviews %>% group_by(village) %>%
+  filter(memb_assoc == "yes") %>%
+  summarize(mean_no_membrs = mean(no_membrs))
+
+interviews %>% summarize(mean_no_membrs = mean(no_membrs))
+
+interviews %>% group_by(village, memb_assoc) %>%
+  summarize(mean_no_members = mean(no_membrs), 
+            min_members = min(no_membrs))
+
+interviews %>% count(village)
+interviews %>% count(village, sort = TRUE)
+
+#Use group_by() and summarize() to find the mean, min, and max 
+# number of household members for each village. 
+# Also, add the number of observations.
+#Hint: see ?n
+interviews %>% group_by(village) %>%
+  summarise(mean_membrs = mean(no_membrs), 
+            min_membrs=min(no_membrs),
+            max_membrs = max(no_membrs),
+            n=n())
+
+# reshaping
+interviews <- interviews %>% mutate(wall_type_logical=TRUE) %>% 
+  spread(key = respondent_wall_type, 
+         value = wall_type_logical, fill=FALSE)
+
+interviews <- interviews %>% gather(key = respondent_wall_type, 
+                                    value="wall_type_logical",
+                                    burntbricks:sunbricks)
+
+# prepare
+interviews <- read_csv("data/SAFI_clean.csv", na="NULL")
+interviews_plotting <- interviews %>%
+  mutate(split_items = strsplit(items_owned, ";")) %>%
+  unnest() %>%
+  mutate(items_owned_logical=TRUE) %>%
+  spread(key=split_items, value = items_owned_logical, fill=FALSE) %>%
+  rename(no_listed_items=`<NA>`) %>%
+  mutate(split_months=strsplit(months_lack_food, ";")) %>%
+  unnest() %>%
+  
