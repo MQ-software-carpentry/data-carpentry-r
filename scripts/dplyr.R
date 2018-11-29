@@ -18,3 +18,12 @@ interviews_god <- select(filter(interviews, village == "God"),
 
 interviews_god <- interviews %>% filter(village=="God")%>%
   select(no_membrs, years_liv)
+
+# Using pipes, subset the interviews data to include interviews 
+#where respondents were members of an irrigation association (memb_assoc)
+# and retain only the columns affect_conflicts, liv_count, and no_meals.
+interviews %>% filter(memb_assoc == "yes") %>%
+  select(affect_conflicts, liv_count, no_meals)
+
+# mutate
+interviews <- interviews %>% mutate(people_per_room = no_membrs/rooms)
