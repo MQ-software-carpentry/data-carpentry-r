@@ -76,4 +76,9 @@ interviews_plotting <- interviews %>%
   rename(no_listed_items=`<NA>`) %>%
   mutate(split_months=strsplit(months_lack_food, ";")) %>%
   unnest() %>%
-  
+  mutate(months_lack_food_logical=TRUE) %>%
+  spread(key=split_months, value=months_lack_food_logical, fill=FALSE) %>%
+  mutate(number_month_lack_food=rowSums(select(., Apr:Sept))) %>%
+  mutate(number_items=rowSums(select(., bicycle:television)))
+
+write_csv(interviews_plotting, path="data_output/interviews_plotting.csv")  
