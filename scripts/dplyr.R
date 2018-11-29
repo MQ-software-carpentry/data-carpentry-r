@@ -27,3 +27,9 @@ interviews %>% filter(memb_assoc == "yes") %>%
 
 # mutate
 interviews <- interviews %>% mutate(people_per_room = no_membrs/rooms)
+
+
+mean(interviews$no_membrs)
+
+interviews %>% group_by(village) %>%
+  summarize(mean_no_membrs = mean(no_membrs))
